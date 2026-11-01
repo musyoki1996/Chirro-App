@@ -1,0 +1,227 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with display information, country, interests, and onboarding status",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "username": { "type": "string", "maxLength": 50, "pattern": "^[a-zA-Z0-9_]{3,30}$" },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "bio": { "type": "string", "maxLength": 500 },
+        "country": { "type": "string", "maxLength": 100 },
+        "city": { "type": "string", "maxLength": 100 },
+        "avatarUrl": { "type": "string", "maxLength": 1000 },
+        "interests": { "type": "array", "description": "Array of user interests" },
+        "skills": { "type": "array", "description": "Array of user skills" },
+        "isOnboarded": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "username", "displayName", "isOnboarded"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "A post in the social network feed, optionally structured with the Action Layer",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 100 },
+        "authorUsername": { "type": "string", "maxLength": 50 },
+        "authorAvatar": { "type": "string", "maxLength": 1000 },
+        "postType": { "type": "string", "enum": ["discussion", "question", "poll", "event", "project", "opportunity", "community_request"] },
+        "content": { "type": "string", "maxLength": 5000 },
+        "tags": { "type": "array" },
+        "circleId": { "type": "string", "maxLength": 128 },
+        "circleName": { "type": "string", "maxLength": 100 },
+        "location": { "type": "string", "maxLength": 100 },
+        "mediaUrl": { "type": "string", "maxLength": 1000 },
+        "opportunityCategory": { "type": "string", "maxLength": 100 },
+        "opportunityDeadline": { "type": "string", "maxLength": 100 },
+        "opportunityStatus": { "type": "string", "enum": ["open", "in_progress", "completed", "closed"] },
+        "eventDate": { "type": "string", "maxLength": 100 },
+        "pollOptions": { "type": "array" },
+        "pollVotes": { "type": "object" },
+        "likesCount": { "type": "number" },
+        "repliesCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["authorId", "postType", "content"]
+    },
+    "Reply": {
+      "title": "Reply",
+      "description": "Comment or response on a post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string", "maxLength": 128 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 100 },
+        "authorUsername": { "type": "string", "maxLength": 50 },
+        "authorAvatar": { "type": "string", "maxLength": 1000 },
+        "content": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["postId", "authorId", "content"]
+    },
+    "Circle": {
+      "title": "Circle",
+      "description": "Topic or location based community",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "slug": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "category": { "type": "string", "maxLength": 100 },
+        "isPrivate": { "type": "boolean" },
+        "memberCount": { "type": "number" },
+        "iconUrl": { "type": "string", "maxLength": 1000 },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "rules": { "type": "array" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "slug", "category", "ownerId"]
+    },
+    "CircleMember": {
+      "title": "CircleMember",
+      "description": "Membership in a Circle",
+      "type": "object",
+      "properties": {
+        "circleId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["member", "moderator", "admin"] },
+        "joinedAt": { "type": "string" }
+      },
+      "required": ["circleId", "userId", "role"]
+    },
+    "OpportunityResponse": {
+      "title": "OpportunityResponse",
+      "description": "Collaborator or applicant response to a project or opportunity",
+      "type": "object",
+      "properties": {
+        "opportunityId": { "type": "string", "maxLength": 128 },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "respondentId": { "type": "string", "maxLength": 128 },
+        "respondentName": { "type": "string", "maxLength": 100 },
+        "respondentUsername": { "type": "string", "maxLength": 50 },
+        "respondentAvatar": { "type": "string", "maxLength": 1000 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "skills": { "type": "array" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["opportunityId", "ownerId", "respondentId", "message"]
+    },
+    "Like": {
+      "title": "Like",
+      "description": "Like record on a post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["postId", "userId"]
+    },
+    "Bookmark": {
+      "title": "Bookmark",
+      "description": "Saved post by user",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["postId", "userId"]
+    },
+    "Follow": {
+      "title": "Follow",
+      "description": "Follow relationship between users",
+      "type": "object",
+      "properties": {
+        "followerId": { "type": "string", "maxLength": 128 },
+        "followingId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["followerId", "followingId"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User notification for social events",
+      "type": "object",
+      "properties": {
+        "recipientId": { "type": "string", "maxLength": 128 },
+        "senderId": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "senderAvatar": { "type": "string", "maxLength": 1000 },
+        "type": { "type": "string", "enum": ["like", "reply", "follow", "opportunity_response", "mention"] },
+        "targetId": { "type": "string", "maxLength": 128 },
+        "message": { "type": "string", "maxLength": 500 },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["recipientId", "senderId", "type", "read"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Content moderation report",
+      "type": "object",
+      "properties": {
+        "reporterId": { "type": "string", "maxLength": 128 },
+        "targetType": { "type": "string", "enum": ["post", "profile", "circle"] },
+        "targetId": { "type": "string", "maxLength": 128 },
+        "reason": { "type": "string", "maxLength": 200 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["pending", "reviewed", "dismissed", "actioned"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["reporterId", "targetType", "targetId", "reason", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Public and user profiles"
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "Public social and action layer posts"
+    },
+    "/posts/{postId}/replies/{replyId}": {
+      "schema": { "$ref": "#/entities/Reply" },
+      "description": "Threaded replies to posts"
+    },
+    "/circles/{circleId}": {
+      "schema": { "$ref": "#/entities/Circle" },
+      "description": "Community circles"
+    },
+    "/circleMembers/{memberId}": {
+      "schema": { "$ref": "#/entities/CircleMember" },
+      "description": "Circle memberships"
+    },
+    "/opportunityResponses/{responseId}": {
+      "schema": { "$ref": "#/entities/OpportunityResponse" },
+      "description": "Responses to projects and opportunities"
+    },
+    "/likes/{likeId}": {
+      "schema": { "$ref": "#/entities/Like" },
+      "description": "Post likes"
+    },
+    "/bookmarks/{bookmarkId}": {
+      "schema": { "$ref": "#/entities/Bookmark" },
+      "description": "User bookmarked posts"
+    },
+    "/follows/{followId}": {
+      "schema": { "$ref": "#/entities/Follow" },
+      "description": "User follow graph"
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "User notifications"
+    },
+    "/reports/{reportId}": {
+      "schema": { "$ref": "#/entities/Report" },
+      "description": "Moderation reports"
+    }
+  }
+}

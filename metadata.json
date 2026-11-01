@@ -1,0 +1,6 @@
+{
+  "name": "Kutana - Africa Social Network",
+  "description": "An original Africa-focused social network connecting conversations, communities, and real-world opportunities across Africa.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
